@@ -1,0 +1,17 @@
+
+.hello{
+height: 500px;
+
+background-image: url("./components/Images/blue.png");
+visibility: visible;
+background-color:#1f5ca2;
+
+ font-family:"Nunito Sans",sans-serif,"Helvetica Neue Light","Helvetica Neue","Helvetica","Arial";
+}
+
+/* 
+ */
+.color{
+  color: white;
+}
+

@@ -1,0 +1,160 @@
+Delete & Details Functionality
+------------------------------
+modify delete and details links in the RestaurantList component
+import React, { Component } from 'react'
+import { Table } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import Footer from './Footer';
+export class RestauranstList extends Component {
+  constructor() {
+    super();
+    this.state = {
+      list: null
+    }
+  }
+  componentDidMount() {
+    fetch("http://localhost:3000/restaurant").then((response) => {
+      response.json().then((result) => {
+        this.setState({ list: result })
+      })
+    })
+  }
+ 
+  render() {
+
+    return (
+      <div>
+        <h1>Restauranst List</h1>
+        {
+          this.state.list ?
+            <div>
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Rating</th>
+                    <th>Location</th>
+                    <th>Operations</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  {
+                    this.state.list.map((item, i) =>
+                      //<div className="list-wrapper">
+                      //   <span>{item.name}</span>
+                      //   <span>{item.email}</span>
+                      //    <span>{item.address}</span>
+                      //  </div>
+                      <tr>
+                        <td>{item.id}</td>
+                        <td>{item.name}</td>
+                        <td>{item.email}</td>
+                        <td>{item.rating}</td>
+                        <td>{item.address}</td>
+                        <td>
+                        <span><Link to={"/update/" + item.id} className="btn btn-primary">Edit</Link></span>
+                          <span><Link to={"/details/" + item.id} className="btn btn-info">Details</Link></span>
+                          <span onClick={()=>this.delete(item.id)} className="btn btn-danger">Delete</span>
+                        </td>
+                      </tr>
+                    )
+                  }
+
+                </tbody>
+              </Table>
+            </div>
+            : <p>Please wait</p>
+        }
+        <Footer />
+      </div>
+    )
+  }
+}
+
+export default RestauranstList
+
+step2:add delete method 
+ delete(id) {
+
+    alert("Delete!"+id);
+    fetch("http://localhost:3000/restaurant/"+id,{
+      method: "DELETE",
+    }).then((result)=>{
+      result.json().then((resp)=>{
+        alert("Restaurant has been Deleted");
+       // window.open("http://localhost:3001/list","_self");
+       window.location.replace("http://localhost:3001/list");
+      })
+    })
+  }
+
+step3:add RestaurantDetails component code
+import React, { Component } from 'react'
+import { Table } from 'react-bootstrap';
+export class RestaurantDetail extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: null,
+      email: null,
+      address: null,
+      rating: null,
+      id: null,
+    }
+  }
+  componentDidMount() {
+    fetch('http://localhost:3000/restaurant/' + this.props.match.params.id).then((response) => {
+      response.json().then((result) => {
+        //  this.setState({ list: result })
+        console.warn(result)
+        this.setState({
+          name: result.name,
+          email: result.email,
+          address: result.address,
+          rating: result.rating,
+          id: result.id
+        })
+      })
+    })
+  }
+  back() {
+    window.location.replace("http://localhost:3001/list");
+  }
+  render() {
+    return (
+      <div className="container">
+        <h1>Restaurant Detail</h1>
+        <Table striped bordered hover size="sm">
+          <tr>
+            <td>Id</td>
+            <td>{this.state.id}</td>
+          </tr>
+          <tr>
+            <td>Name</td>
+            <td>{this.state.name}</td>
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td>{this.state.email}</td>
+          </tr>
+          <tr>
+            <td>Rating</td>
+            <td>{this.state.rating}</td>
+          </tr>
+          <tr>
+            <td>Address</td>
+            <td>{this.state.address}</td>
+          </tr>
+        </Table>
+        <button onClick={() => { this.back() }} className="btn btn-primary">Back</button>
+      </div>
+    )
+  }
+}
+
+export default RestaurantDetail
+
+

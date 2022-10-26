@@ -1,0 +1,115 @@
+Listing
+----------------------------------
+1.Make a API
+2.Test it with Postman
+3.Fetch API
+4.Show API Data
+
+step1:open db.json file and change
+{
+    "restaurant": [
+      {
+        "id": 1,
+        "name":"Pizza Hut",
+        "address":"Hyderabad",
+        "rating":"4.5",
+        "email":"pizzahut@test.com"
+      },
+      {
+        "id": 2,
+        "name":"McDonald",
+        "address":"Secundrabad",
+        "rating":"4.5",
+        "email":"mcdonal@test.com"
+      },
+      {
+        "id": 3,
+        "name":"Santosh Daba",
+        "address":"Hyderabad",
+        "rating":"4.5",
+        "email":"santoshdaba@test.com"
+      },
+      {
+        "id": 4,
+        "name":"Rayaseema Ruchulu",
+        "address":"Madapur",
+        "rating":"4.5",
+        "email":"rayaseemaruchulu@test.com"
+      }
+
+    ]
+  }
+
+step2:open RestaurantsList.js file and add the following code
+import React, { Component } from 'react'
+
+export class RestauranstList extends Component {
+  constructor(){
+    super();
+    this.state = {
+      list:null
+    }
+  }
+  componentDidMount(){
+    fetch("http://localhost:3000/restaurant").then((response)=>{
+      response.json().then((result)=>{
+        this.setState({list:result})
+      })
+    })
+  }
+  render() {
+
+    return (
+      <div>
+        <h1>Restauranst List</h1>
+        {
+            this.state.list?
+            <div>
+             {
+               this.state.list.map((item,i)=>
+                 <div className="list-wrapper">
+                    <span>{item.id}</span>
+                   <span>{item.name}</span>
+                   <span>{item.email}</span>
+                   <span>{item.address}</span>
+                 </div>
+               )
+             }
+            </div>
+            :<p>Please wait</p>
+        }
+      </div>
+    )
+  }
+}
+
+export default RestauranstList
+
+
+step3:open App.css file and add following css 
+span{
+  display: inline-block;
+  background-color:antiquewhite;
+  padding: 10px;
+  margin: 5px;
+}
+.list-wrapper{
+  border:1px solid #ccc;
+  margin: auto;
+  width: 500px;
+  margin-top: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

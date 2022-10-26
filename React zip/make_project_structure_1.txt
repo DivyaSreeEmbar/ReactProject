@@ -1,0 +1,443 @@
+React Project From Scratch
+==========================
+step1:Make A project structure
+step2:Routing
+step3:Login And Registration
+step4:Api calls
+step5:Listing of restaurants
+step6:Make new restaurant
+step7:Update Restaurant
+step8:Delete Restaurant
+step9:Search Restaurant
+Step10:Style and desing  etc.,
+
+planing advanced
+->google map
+redux
+upload photos
+gallery
+login with facebook,google
+
+Lets start the step by step
+----------------------------
+Make A project Structure
+-----------------------------
+step1:create a project
+
+>npm create-react-app jsonserver-login
+Note:before use this command make sure node and npm
+>cd jsonserver-login
+>npm start
+
+step2:open command prompt in your project location and give the follwoing command
+
+>npm install -g json-server
+>create db folder inside db.jso file also create
+
+>mkdir db
+>cd db
+>db.json file here
+
+{
+    "restaurant": [
+      {
+        "id": 1,
+        "name":"Pizza Hut",
+        "address":"Hyderabad",
+        "rating":"4.5",
+        "email":"pizzahut@test.com"
+      },
+      {
+        "id": 2,
+        "name":"McDonald",
+        "address":"Secundrabad",
+        "rating":"4.5",
+        "email":"mcdonal@test.com"
+      },
+      {
+        "id": 3,
+        "name":"Santosh Daba",
+        "address":"Hyderabad",
+        "rating":"4.5",
+        "email":"santoshdaba@test.com"
+      },
+      {
+        "id": 4,
+        "name":"Rayaseema Ruchulu",
+        "address":"Madapur",
+        "rating":"4.5",
+        "email":"rayaseemaruchulu@test.com"
+      }
+
+    ]
+  }
+
+>json-server --watch db.json and run the react also
+npm start
+--------------------------------------------------------
+Routing 
+--------------------------------------------------------
+1.Install Routing Package 
+2.Make Component
+       -> RestauranstList
+       -> RestaurantDetail
+       -> RestaurantSearch
+       -> RestaurantMake/RestaurantCreate
+       -> RestaurantUpdate
+       -> Home
+3.Make Link For All Component
+4.Make Route For All Component
+
+step1:open project terminal or command project and install Routing module
+>npm install react-router-dom --save
+
+Note:before completing refer the link how to provide routing
+https://reactrouter.com/web/guides/quick-start
+
+step2:install react code plugin for easy to create components
+go to extensions and install
+
+step3:create a components folder in your src folder after create RestauranstList.js
+------------------
+import React, { Component } from 'react'
+
+export class RestauranstList extends Component {
+  render() {
+    return (
+      <div>
+        <h1>Restauranst List</h1>
+      </div>
+    )
+  }
+}
+
+export default RestauranstList
+
+RestaurantDetail.js
+-------------------
+import React, { Component } from 'react'
+
+export class RestaurantDetail extends Component {
+  render() {
+    return (
+      <div>
+        <h1>Restaurant Detail</h1>
+      </div>
+    )
+  }
+}
+
+export default RestaurantDetail
+
+RestaurantSearch .js
+--------------------
+import React, { Component } from 'react'
+
+export class RestaurantSearch extends Component {
+  render() {
+    return (
+      <div>
+        <h1>Restaurant Search</h1>
+      </div>
+    )
+  }
+}
+
+export default RestaurantSearch
+
+RestaurantCreate.js
+-------------------
+import React, { Component } from 'react'
+
+export class RestaurantCreate extends Component {
+  render() {
+    return (
+      <div>
+        <h1>Restaurant Create</h1>
+      </div>
+    )
+  }
+}
+
+export default RestaurantCreate
+
+RestaurantUpdate.js
+--------------------
+import React, { Component } from 'react'
+
+export class RestaurantUpdate extends Component {
+  render() {
+    return (
+      <div>
+        <h1>Restaurant Update</h1>
+      </div>
+    )
+  }
+}
+
+export default RestaurantUpdate
+
+Home.js
+-------
+import React, { Component } from 'react'
+
+export class Home extends Component {
+  render() {
+    return (
+      <div>
+        <h1>Welcome To Restaurant Application</h1>
+      </div>
+    )
+  }
+}
+
+export default Home
+
+step4:make routing first open App.js and add the following import statement
+import './App.css';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import Home from './components/Home';
+import RestauranstList from './components/RestauranstList';
+import RestaurantCreate from './components/RestaurantCreate'
+import RestaurantDetail from './components/RestaurantDetail'
+import RestaurantSearch from './components/RestaurantSearch'
+import RestaurantUpdate from './components/RestaurantUpdate'
+
+function App() {
+  return (
+    <div className="App">
+      <Router>
+        <ul>
+          <li><Link to={"/"}>Home</Link></li>
+          <li><Link to={"/list"}>List</Link></li>
+          <li><Link to={"/create"}>Create</Link></li>
+          <li><Link to={"/search"}>Search</Link></li>
+          <li><Link to={"/details"}>Details</Link></li>
+          <li><Link to={"/update"}>Update</Link></li>
+        </ul>
+        <Switch>
+        <Route path="/list">
+          <RestauranstList />
+        </Route>
+        <Route path="/create">
+          <RestaurantCreate />
+        </Route>
+        <Route path="/search">
+          <RestaurantSearch />
+        </Route>
+        <Route path="/details">
+          <RestaurantDetail />
+        </Route>
+        <Route path="/upate">
+          <RestaurantUpdate />
+        </Route>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        </Switch>
+      </Router>
+    </div>
+  );
+}
+
+export default App;
+-----------------------------------
+Listing
+----------------------------------
+1.Make a API
+2.Test it with Postman
+3.Fetch API
+4.Show API Data
+
+step1:open db.json file and change
+{
+    "restaurant": [
+      {
+        "id": 1,
+        "name":"Pizza Hut",
+        "address":"Hyderabad",
+        "rating":"4.5",
+        "email":"pizzahut@test.com"
+      },
+      {
+        "id": 2,
+        "name":"McDonald",
+        "address":"Secundrabad",
+        "rating":"4.5",
+        "email":"mcdonal@test.com"
+      },
+      {
+        "id": 3,
+        "name":"Santosh Daba",
+        "address":"Hyderabad",
+        "rating":"4.5",
+        "email":"santoshdaba@test.com"
+      },
+      {
+        "id": 4,
+        "name":"Rayaseema Ruchulu",
+        "address":"Madapur",
+        "rating":"4.5",
+        "email":"rayaseemaruchulu@test.com"
+      }
+
+    ]
+  }
+
+step2:open RestaurantsList.js file and add the following code
+import React, { Component } from 'react'
+
+export class RestauranstList extends Component {
+  constructor(){
+    super();
+    this.state = {
+      list:null
+    }
+  }
+  componentDidMount(){
+    fetch("http://localhost:3000/restaurant").then((response)=>{
+      response.json().then((result)=>{
+        this.setState({list:result})
+      })
+    })
+  }
+  render() {
+
+    return (
+      <div>
+        <h1>Restauranst List</h1>
+        {
+            this.state.list?
+            <div>
+             {
+               this.state.list.map((item,i)=>
+                 <div className="list-wrapper">
+                    <span>{item.id}</span>
+                   <span>{item.name}</span>
+                   <span>{item.email}</span>
+                   <span>{item.address}</span>
+                 </div>
+               )
+             }
+            </div>
+            :<p>Please wait</p>
+        }
+      </div>
+    )
+  }
+}
+
+export default RestauranstList
+
+
+step3:open App.css file and add following css 
+span{
+  display: inline-block;
+  background-color:antiquewhite;
+  padding: 10px;
+  margin: 5px;
+}
+.list-wrapper{
+  border:1px solid #ccc;
+  margin: auto;
+  width: 500px;
+  margin-top: 10px;
+}
+
+
+------------------------------------
+Add Bootstrap
+------------------------------------
+step1: install the bootstrap package 
+>npm i bootstrap react-bootstrap
+
+step2:add css link in to index.js file
+import 'bootstrap/dist/css/bootstrap.min.css';
+index.js
+-------
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import 'bootstrap/dist/css/bootstrap.min.css';
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+reportWebVitals();
+
+step3:add the table and remove ul item
+RestaurantList.js
+-----------------
+import React, { Component } from 'react'
+import { Table } from 'react-bootstrap';
+export class RestauranstList extends Component {
+  constructor() {
+    super();
+    this.state = {
+      list: null
+    }
+  }
+  componentDidMount() {
+    fetch("http://localhost:3000/restaurant").then((response) => {
+      response.json().then((result) => {
+        this.setState({ list: result })
+      })
+    })
+  }
+  render() {
+
+    return (
+      <div>
+        <h1>Restauranst List</h1>
+        {
+          this.state.list ?
+            <div>
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Rating</th>
+                    <th>Location</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  {
+                    this.state.list.map((item, i) =>
+                      //<div className="list-wrapper">
+                      //   <span>{item.name}</span>
+                      //   <span>{item.email}</span>
+                      //    <span>{item.address}</span>
+                      //  </div>
+                      <tr>
+                        <td>{item.id}</td>
+                        <td>{item.name}</td>
+                        <td>{item.email}</td>
+                        <td>{item.rating}</td>
+                        <td>{item.address}</td>
+                      </tr>
+                    )
+                  }
+
+                </tbody>
+              </Table>
+            </div>
+            : <p>Please wait</p>
+        }
+      </div>
+    )
+  }
+}
+
+export default RestauranstList
+
+
+
+
+

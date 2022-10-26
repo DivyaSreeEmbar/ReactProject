@@ -1,0 +1,77 @@
+Integration Post API and Add new Restaurant
+
+1.Test Api with Postman
+2.Make Input fields
+3.Collect Data from fields
+4.Fire Post API
+5.Test New Entry is done of not
+
+step1:Test API with Postman
+
+->GET     http://localhost:3000/restaurant
+
+->POST    http://localhost:3000/restaurant
+         {
+           "id": 5,
+           "name": "Kaka Hotel",
+           "address": "Hyderabad",
+           "rating": "4.5",
+           "email": "kaka@test.com"
+         } 
+->PUT    http://localhost:3000/restaurant/5
+         {
+          "id": 5,
+          "name": "Kaka Daba",
+          "address": "Hyderabad",
+          "rating": "4.5",
+          "email": "kaka@test.com"
+         }
+->DELETE http://localhost:3000/restaurant/5
+
+step2:add the restaurant creation component code
+import React, { Component } from 'react'
+
+export class RestaurantCreate extends Component {
+  constructor(props)
+  {
+    super(props);
+    this.state={
+      name:null,
+      email:null,
+      address:null,
+      rating:null,
+    }
+  }
+  create()
+  {
+    fetch('http://localhost:3000/restaurant',{
+      method: "Post",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.state)
+    }).then((result)=>{
+      result.json().then((resp)=>{
+        alert("Restaurant has been added");
+       // window.open("http://localhost:3001/list","_self");
+       window.location.replace("http://localhost:3001/list");
+      })
+    })
+  }
+  render() {
+    return (
+      <div>
+        <h1>Restaurant Create</h1>
+        <div>
+          <input onChange={(event) => { this.setState({ name: event.target.value }) }} placeholder="Restaurant Name" /><br /><br /><br />
+          <input onChange={(event) => { this.setState({ email: event.target.value }) }} placeholder="Restaurant Email" /><br /><br /><br />
+          <input onChange={(event) => { this.setState({ rating: event.target.value }) }} placeholder="Restaurant Rating" /><br /><br /><br />
+          <input onChange={(event) => { this.setState({ address: event.target.value }) }} placeholder="Restaurant Address" /><br /><br />
+          <button onClick={() => { this.create() }} className="btn btn-primary">Add Restaurant</button>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default RestaurantCreate

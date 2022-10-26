@@ -1,0 +1,214 @@
+Update Restaurant
+------------------
+1.Test PUT API for update Restaurant with postman
+PUT    http://localhost:3000/restaurant/5
+
+       {
+        "id": 5,
+        "name": "Kaka Daba",
+        "address": "Hyderabad",
+        "rating": "4.5",
+        "email": "kaka@test.com"
+        }
+
+2.Add Edit Link in RestauranstList.js
+
+import React, { Component } from 'react'
+import { Table } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+export class RestauranstList extends Component {
+  constructor() {
+    super();
+    this.state = {
+      list: null
+    }
+  }
+  componentDidMount() {
+    fetch("http://localhost:3000/restaurant").then((response) => {
+      response.json().then((result) => {
+        this.setState({ list: result })
+      })
+    })
+  }
+  render() {
+
+    return (
+      <div>
+        <h1>Restauranst List</h1>
+        {
+          this.state.list ?
+            <div>
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Rating</th>
+                    <th>Location</th>
+                    <th>Operations</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  {
+                    this.state.list.map((item, i) =>
+                      //<div className="list-wrapper">
+                      //   <span>{item.name}</span>
+                      //   <span>{item.email}</span>
+                      //    <span>{item.address}</span>
+                      //  </div>
+                      <tr>
+                        <td>{item.id}</td>
+                        <td>{item.name}</td>
+                        <td>{item.email}</td>
+                        <td>{item.rating}</td>
+                        <td>{item.address}</td>
+                        <td>
+                          <Link to={"/update/"+item.id} className="btn btn-primary">Edit</Link>
+                          <Link to={"/details/"+item.id} className="btn btn-info">Details</Link>
+                          <Link to="#" className="btn btn-danger">Delete</Link>
+                        </td>
+                      </tr>
+                    )
+                  }
+
+                </tbody>
+              </Table>
+            </div>
+            : <p>Please wait</p>
+        }
+      </div>
+    )
+  }
+}
+
+export default RestauranstList
+
+
+
+3.Pass Id as URL props
+<td>
+                          <Link to={"/update/"+item.id} className="btn btn-primary">Edit</Link>
+                          <Link to={"/details/"+item.id} className="btn btn-info">Details</Link>
+                          <Link to="#" className="btn btn-danger">Delete</Link>
+                        </td>
+4.GET API for fetch the information and show it in the next inputs
+import React, { Component } from 'react'
+
+export class RestaurantUpdate extends Component {
+  constructor()
+  {
+    super();
+    this.state={
+      name:null,
+      email:null,
+      address:null,
+      rating:null,
+      id:null,
+    }
+  }
+  componentDidMount() {
+    fetch('http://localhost:3000/restaurant/' + this.props.match.params.id).then((response) => {
+      response.json().then((result) => {
+        //  this.setState({ list: result })
+        console.warn(result)
+        this.setState({
+           name: result.name,
+           email:result.email,
+           address:result.address,
+           rating:result.rating,
+           id:result.id
+          })
+      })
+    })
+  }
+  update(){
+
+  }
+  render() {
+    console.warn(this.state);
+    return (
+      <div>
+        <h1>Restaurant Update</h1>
+        <div>
+          <input onChange={(event) => { this.setState({ name: event.target.value }) }} value={this.state.name} /><br /><br /><br />
+          <input onChange={(event) => { this.setState({ email: event.target.value }) }} value={this.state.email} /><br /><br /><br />
+          <input onChange={(event) => { this.setState({ rating: event.target.value }) }} value={this.state.rating} /><br /><br /><br />
+          <input onChange={(event) => { this.setState({ address: event.target.value }) }} value={this.state.address} /><br /><br />
+          <button onClick={() => { this.update() }} className="btn btn-primary">Update</button>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default RestaurantUpdate
+
+
+5.PUT API for update Data
+import React, { Component } from 'react'
+
+export class RestaurantUpdate extends Component {
+  constructor()
+  {
+    super();
+    this.state={
+      name:null,
+      email:null,
+      address:null,
+      rating:null,
+      id:null,
+    }
+  }
+  componentDidMount() {
+    fetch('http://localhost:3000/restaurant/' + this.props.match.params.id).then((response) => {
+      response.json().then((result) => {
+        //  this.setState({ list: result })
+        console.warn(result)
+        this.setState({
+           name: result.name,
+           email:result.email,
+           address:result.address,
+           rating:result.rating,
+           id:result.id
+          })
+      })
+    })
+  }
+  update(){
+    fetch('http://localhost:3000/restaurant/'+this.state.id,{
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.state)
+    }).then((result)=>{
+      result.json().then((resp)=>{
+        alert("Restaurant has been Updated");
+       // window.open("http://localhost:3001/list","_self");
+       window.location.replace("http://localhost:3001/list");
+      })
+    })
+  }
+  render() {
+    console.warn(this.state);
+    return (
+      <div>
+        <h1>Restaurant Update</h1>
+        <div>
+          <input onChange={(event) => { this.setState({ name: event.target.value }) }} value={this.state.name} /><br /><br /><br />
+          <input onChange={(event) => { this.setState({ email: event.target.value }) }} value={this.state.email} /><br /><br /><br />
+          <input onChange={(event) => { this.setState({ rating: event.target.value }) }} value={this.state.rating} /><br /><br /><br />
+          <input onChange={(event) => { this.setState({ address: event.target.value }) }} value={this.state.address} /><br /><br />
+          <button onClick={() => { this.update() }} className="btn btn-primary">Update</button>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default RestaurantUpdate
+
+
+

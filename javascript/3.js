@@ -1,0 +1,10 @@
+let a=2;
+let b=3;
+let c;
+console.log("before",a);
+console.log("before",b);
+c=a;
+a=b;
+b=c;
+console.log("after",a);
+console.log("after",b);
